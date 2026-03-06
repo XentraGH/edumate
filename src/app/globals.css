@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-dm-sans);
+  --font-mono: ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -120,3 +120,155 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Text Streaming Fade Animation */
+@keyframes textFadeIn {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+.streaming-text {
+  animation: textFadeIn 0.3s ease-out forwards;
+}
+
+/* Markdown Styling */
+.markdown-content {
+  line-height: 1.6;
+}
+
+.markdown-content > *:first-child {
+  margin-top: 0;
+}
+
+.markdown-content > *:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 0.75rem;
+  margin-bottom: 0.375rem;
+  color: #18181b;
+}
+
+.markdown-content h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 0.625rem;
+  margin-bottom: 0.375rem;
+  color: #18181b;
+}
+
+.markdown-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: #18181b;
+}
+
+.markdown-content p {
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
+  padding-left: 1.5rem;
+  display: block;
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+  list-style-position: outside;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+  list-style-position: outside;
+}
+
+.markdown-content li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  display: list-item;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+  color: #18181b;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+/* Inline code only - code blocks are handled by custom component */
+.markdown-content code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+}
+
+.markdown-content a {
+  color: #18181b;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+
+.markdown-content a:hover {
+  color: #52525b;
+}
+
+.markdown-content blockquote {
+  border-left: 2px solid #d4d4d8;
+  padding-left: 0.75rem;
+  margin-left: 0;
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
+  color: #52525b;
+  font-style: italic;
+}
+
+.markdown-content hr {
+  border-top: 1px solid #e4e4e7;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.375rem;
+  margin-bottom: 0.375rem;
+}
+
+.markdown-content th, .markdown-content td {
+  border: 1px solid #e4e4e7;
+  padding: 0.375rem;
+  text-align: left;
+}
+
+.markdown-content th {
+  background: #f4f4f5;
+  font-weight: 600;
+}
+
+/* Custom animation delays */
+.delay-50 { animation-delay: 50ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
