@@ -5,7 +5,8 @@ import { createSession } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, password } = await request.json()
+    const body = await request.json()
+    const { username, password } = body
 
     if (!username || !password) {
       return NextResponse.json(
@@ -25,6 +26,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Password must be at least 6 characters' },
         { status: 400 }
+      )
+    }
+
+    // Check if database is connected
+    try {
+      await db.$connect()
+    } catch (connectError) {
+      console.error('Database connection error:', connectError)
+      return NextResponse.json(
+        { error: 'Database connection failed. Please try again later.' },
+        { status: 503 }
       )
     }
 
@@ -52,10 +64,36 @@ export async function POST(request: NextRequest) {
     await createSession(user)
 
     return NextResponse.json({ user })
-  } catch (error) {
-    console.error('Signup error:', error)
+  } catch (error: any) {
+    console.error('Signup error:', {
+      message: error?.message,
+      code: error?.code,
+      meta: error?.meta,
+      stack: error?.stack,
+    })
+    
+    // Handle specific Prisma errors
+    if (error?.code === 'P1001') {
+      return NextResponse.json(
+        { error: 'Cannot reach database server. Please check your connection.' },
+        { status: 503 }
+      )
+    }
+    if (error?.code === 'P1002') {
+      return NextResponse.json(
+        { error: 'Database connection timed out. Please try again.' },
+        { status: 503 }
+      )
+    }
+    if (error?.code === 'P2021') {
+      return NextResponse.json(
+        { error: 'Database tables not found. Please run database migrations.' },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: process.env.NODE_ENV === 'development' ? error?.message : undefined },
       { status: 500 }
     )
   }
